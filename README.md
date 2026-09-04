@@ -1,6 +1,6 @@
 # Pulse
 
-A detailed Fabric server profiler with a Spark-style web viewer.
+A detailed Fabric server profiler with a web viewer.
 
 Pulse samples CPU stacks, tick times, memory, GC, worlds, network, disk, and errors, then uploads a gzip JSON report. The viewer is a static site meant for GitHub Pages. Shareable links need a small upload API you host yourself.
 
@@ -50,42 +50,3 @@ After first launch, `config/pulse.json` includes sampler, HUD, and upload option
   "pruneBelowPercent": 0.25
 }
 ```
-
-Set `viewerBaseUrl` to your GitHub Pages origin, for example `https://you.github.io/pulse`.
-
-## Website (GitHub Pages)
-
-```bash
-cd website
-npm install
-npm run dev
-```
-
-Production build for project pages (`https://<user>.github.io/pulse/`):
-
-```bash
-cd website
-set GITHUB_PAGES=true
-npm run build
-```
-
-`VITE_API_BASE` is the origin of the upload API (no trailing slash), e.g. `https://pulse-api.example.com`.
-
-The GitHub Action in `.github/workflows/pages.yml` builds and deploys the viewer.
-
-## Upload API
-
-```bash
-cd api
-npm install
-npm run start
-```
-
-Listens on port `8787` by default (`PORT` to change). Stores gzip reports under `api/data/reports`.
-
-## Local end-to-end
-
-1. `cd api && npm install && npm start`
-2. `cd website && npm install && npm run dev`
-3. Drop `pulse-1.0.0.jar` into a Fabric 26.2 server `mods/` folder
-4. `/pulse profiler start 10` then open the chat link
