@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { apiBase, type PulseReport } from "../types";
 import { getLocalReport } from "../localReport";
 import Overview from "../viewer/Overview";
@@ -18,6 +18,9 @@ export default function Viewer() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setTab("Overview");
+    setReport(null);
+    setError(null);
     if (id === "local") {
       const local = getLocalReport();
       if (!local) setError("No local report loaded. Drop a file on the home page.");
@@ -34,19 +37,36 @@ export default function Viewer() {
       .catch((e) => setError(e instanceof Error ? e.message : "Failed to load report"));
   }, [id]);
 
-  if (error) return <p className="err">{error}</p>;
+  if (error) {
+    return (
+      <div className="prose">
+        <p className="err">{error}</p>
+        <p>
+          <Link to="/">Back home</Link>
+        </p>
+      </div>
+    );
+  }
   if (!report) return <p className="muted">Loading report…</p>;
 
   const when = new Date(report.createdAt).toLocaleString();
 
   return (
-    <div>
-      <div className="meta">
-        {report.kind} · {when}
-        {report.durationMs != null ? ` · ${Math.round(report.durationMs / 1000)}s window` : ""}
-        {report.platform?.serverName ? ` · ${report.platform.serverName}` : ""}
-        {report.platform?.minecraft ? ` · MC ${report.platform.minecraft}` : ""}
-        {report.platform?.java ? ` · Java ${report.platform.java}` : ""}
+    <div className="viewer">
+      <div className="viewer-meta">
+        <div>
+          <span className="kind">{report.kind}</span>
+          <span className="meta">
+            {when}
+            {report.durationMs != null ? ` · ${Math.round(report.durationMs / 1000)}s` : ""}
+            {report.platform?.serverName ? ` · ${report.platform.serverName}` : ""}
+            {report.platform?.minecraft ? ` · MC ${report.platform.minecraft}` : ""}
+            {report.platform?.java ? ` · Java ${report.platform.java}` : ""}
+          </span>
+        </div>
+        <Link className="btn small" to="/">
+          Open another
+        </Link>
       </div>
       <div className="tabs">
         {tabs.map((name) => (

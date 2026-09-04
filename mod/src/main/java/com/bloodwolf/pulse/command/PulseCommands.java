@@ -70,7 +70,7 @@ public final class PulseCommands {
 		source.sendSuccess(() -> PulseStyle.prefix().append(PulseStyle.muted("commands")), false);
 		source.sendSuccess(() -> PulseStyle.muted("  /pulse profiler start [seconds] [intervalMs]"), false);
 		source.sendSuccess(() -> PulseStyle.muted("  /pulse profiler stop  |  health  |  heap  |  errors  |  tps  |  reload"), false);
-		source.sendSuccess(() -> PulseStyle.muted("  Edit config/pulse.json for groups, HUD, heap-on-stop, world scan, and more."), false);
+		source.sendSuccess(() -> PulseStyle.muted("  Settings: config/pulse.json"), false);
 		return 1;
 	}
 

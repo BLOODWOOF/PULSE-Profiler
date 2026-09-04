@@ -1,21 +1,20 @@
-import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Layout from "./layout/Layout";
 import Home from "./pages/Home";
+import Download from "./pages/Download";
+import Docs from "./pages/Docs";
 import Viewer from "./pages/Viewer";
 
 export default function App() {
   return (
-    <div className="shell">
-      <header className="top">
-        <Link className="brand" to="/">
-          <span className="pulse">PULSE</span> <span className="mark">profiler</span>
-        </Link>
-        <span className="muted">Fabric server diagnostics</span>
-      </header>
+    <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/download" element={<Download />} />
+        <Route path="/docs" element={<Docs />} />
         <Route path="/r/:id" element={<Viewer />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </div>
+    </Layout>
   );
 }
