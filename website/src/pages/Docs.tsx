@@ -7,6 +7,7 @@ export default function Docs() {
 
       <h2>Commands</h2>
       <p>These require operator permission.</p>
+      <div className="table-wrap">
       <table className="table">
         <thead>
           <tr>
@@ -61,11 +62,13 @@ export default function Docs() {
           </tr>
         </tbody>
       </table>
+      </div>
 
       <h2>Config</h2>
       <p>
         <code>config/pulse.json</code> is created the first time the server starts with Pulse installed.
       </p>
+      <div className="table-wrap">
       <table className="table">
         <thead>
           <tr>
@@ -108,6 +111,7 @@ export default function Docs() {
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ export default function Worlds({ report }: { report: PulseReport }) {
   if (!worlds.length) return <p className="muted">No world snapshots in this report.</p>;
   return (
     <div>
+      <div className="table-wrap">
       <table className="table">
         <thead>
           <tr>
@@ -41,6 +42,7 @@ export default function Worlds({ report }: { report: PulseReport }) {
           ))}
         </tbody>
       </table>
+      </div>
       {worlds.map((w) => (
         <div className="card" key={`${w.id}-types`} style={{ marginTop: 12 }}>
           <h3>{w.id} entity types</h3>

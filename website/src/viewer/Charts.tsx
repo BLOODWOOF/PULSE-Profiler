@@ -134,9 +134,7 @@ export function Stat({ label, value, warn }: { label: string; value: string; war
   return (
     <div className="card">
       <h3>{label}</h3>
-      <p className={warn ? "warn" : undefined} style={{ fontSize: 18, color: "var(--text)", margin: 0 }}>
-        {value}
-      </p>
+      <p className={`stat-value${warn ? " warn" : ""}`}>{value}</p>
     </div>
   );
 }

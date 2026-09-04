@@ -15,12 +15,24 @@ export default function Download() {
       </a>
 
       <h2>Requirements</h2>
-      <ul>
-        <li>Minecraft 26.2</li>
-        <li>Fabric Loader 0.19.3 or newer</li>
-        <li>Fabric API</li>
-        <li>Java 25</li>
-      </ul>
+      <div className="req-grid">
+        <article>
+          <span>Game</span>
+          <strong>Minecraft 26.2</strong>
+        </article>
+        <article>
+          <span>Loader</span>
+          <strong>Fabric 0.19.3+</strong>
+        </article>
+        <article>
+          <span>API</span>
+          <strong>Fabric API</strong>
+        </article>
+        <article>
+          <span>Runtime</span>
+          <strong>Java 25</strong>
+        </article>
+      </div>
 
       <h2>Install</h2>
       <ol>

@@ -25,38 +25,48 @@ export default function Home() {
   return (
     <div>
       <section className="hero">
-        <p className="kicker">Fabric 26.2 · dedicated servers</p>
-        <h1>
-          Diagnose lag, memory, and crashes.
-        </h1>
-        <p className="lede">
-          Pulse samples CPU stacks, tick spikes, heap, GC, worlds, packets, and errors, then
-          opens the result in this viewer.
-        </p>
-        <div className="hero-actions">
-          <Link className="btn primary" to="/download">
-            Get the mod
-          </Link>
-          <Link className="btn" to="/docs">
-            Read the docs
-          </Link>
-          <button
-            type="button"
-            className="btn"
-            onClick={async () => {
-              try {
-                const res = await fetch(`${import.meta.env.BASE_URL}sample.pulse.json`);
-                const report = (await res.json()) as PulseReport;
-                setLocalReport(report);
-                nav("/r/local");
-              } catch {
-                setErr("Could not load the bundled sample report");
-              }
-            }}
-          >
-            Open a sample
-          </button>
+        <div>
+          <p className="kicker">Fabric 26.2 · dedicated servers</p>
+          <h1>Diagnose lag, memory, and crashes.</h1>
+          <p className="lede">
+            Pulse samples CPU stacks, tick spikes, heap, GC, worlds, packets, and errors, then
+            opens the result in this viewer.
+          </p>
+          <div className="hero-actions">
+            <Link className="btn primary" to="/download">
+              Get the mod
+            </Link>
+            <Link className="btn" to="/docs">
+              Read the docs
+            </Link>
+            <button
+              type="button"
+              className="btn"
+              onClick={async () => {
+                try {
+                  const res = await fetch(`${import.meta.env.BASE_URL}sample.pulse.json`);
+                  const report = (await res.json()) as PulseReport;
+                  setLocalReport(report);
+                  nav("/r/local");
+                } catch {
+                  setErr("Could not load the bundled sample report");
+                }
+              }}
+            >
+              Open a sample
+            </button>
+          </div>
         </div>
+        <svg className="hero-trace" viewBox="0 0 280 160" fill="none" aria-hidden="true">
+          <path
+            d="M8 96 H52 L68 118 L96 28 L124 142 L148 96 H272"
+            stroke="#67e8f9"
+            strokeWidth="3"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+          <circle cx="96" cy="28" r="5" fill="#e10600" />
+        </svg>
       </section>
 
       <section className="features">
@@ -87,7 +97,7 @@ export default function Home() {
       </section>
 
       <section className="steps">
-        <h2>How it works</h2>
+        <h2 className="section-title">How it works</h2>
         <ol>
           <li>
             <strong>Install</strong>
@@ -106,7 +116,7 @@ export default function Home() {
 
       <section className="viewer-panel">
         <div className="viewer-copy">
-          <h2>Viewer</h2>
+          <h2 className="section-title">Viewer</h2>
           <p>
             This site opens Pulse reports. After a profile finishes, the file is under{" "}
             <code>config/pulse/reports/</code>. Drop it below.
