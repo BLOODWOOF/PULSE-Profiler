@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "pulse",
+	"version": "${version}",
+	"name": "Pulse",
+	"description": "In-depth Fabric server profiler for CPU, ticks, memory, worlds, network, and errors",
+	"authors": [
+		"BLOODWOLF"
+	],
+	"contact": {
+		"sources": "https://github.com/BLOODWOLF/pulse"
+	},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.bloodwolf.pulse.Pulse"
+		]
+	},
+	"mixins": [
+		"pulse.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

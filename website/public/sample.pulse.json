@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "kind": "profiler",
+  "createdAt": 1756915200000,
+  "durationMs": 30000,
+  "platform": {
+    "minecraft": "26.2",
+    "loader": "fabric",
+    "loaderVersion": "0.19.3",
+    "java": "25",
+    "jvm": "OpenJDK 25",
+    "os": "Windows 11",
+    "arch": "amd64",
+    "cpus": 8,
+    "maxHeap": 4294967296,
+    "mods": [{ "id": "pulse", "version": "1.0.0", "name": "Pulse" }]
+  },
+  "cpu": { "samples": [{ "t": 0, "process": 0.22, "system": 0.18, "threads": 48 }, { "t": 1000, "process": 0.41, "system": 0.3, "threads": 49 }] },
+  "ticks": {
+    "count": 600,
+    "tps": 19.84,
+    "msptMean": 25.2,
+    "msptP95": 38.1,
+    "msptP99": 52.4,
+    "msptMax": 81.0,
+    "series": [{ "t": 0, "ms": 18.2 }, { "t": 50, "ms": 22.1 }, { "t": 100, "ms": 81.0 }, { "t": 150, "ms": 24.0 }],
+    "spikes": [{ "t": 100, "ms": 81.0, "stacks": [{ "thread": "Server thread RUNNABLE", "frames": ["net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1)", "net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:1)"] }] }]
+  },
+  "worlds": [{
+    "id": "minecraft:overworld",
+    "msptMean": 18.4,
+    "chunks": 441,
+    "entities": 820,
+    "players": 1,
+    "entityTypes": [{ "type": "minecraft:zombie", "count": 40 }, { "type": "minecraft:item", "count": 120 }],
+    "chunkLoads": 12,
+    "chunkUnloads": 3
+  }],
+  "players": [{ "name": "BLOODWOLF", "ping": 32, "world": "minecraft:overworld" }],
+  "viewDistance": 10,
+  "simulationDistance": 8,
+  "memory": {
+    "series": [
+      { "t": 0, "heapUsed": 1200000000, "heapCommitted": 2000000000, "heapMax": 4294967296, "nonHeap": 120000000, "metaspace": 90000000, "direct": 20000000, "mapped": 4000000 },
+      { "t": 1000, "heapUsed": 1500000000, "heapCommitted": 2000000000, "heapMax": 4294967296, "nonHeap": 121000000, "metaspace": 91000000, "direct": 21000000, "mapped": 4000000 }
+    ]
+  },
+  "gc": {
+    "collectors": [{ "name": "G1 Young Generation", "count": 12, "timeMs": 84 }],
+    "series": [{ "t": 1000, "pauseMs": 12, "name": "G1 Young Generation" }]
+  },
+  "disk": { "path": "C:/server/world", "totalBytes": 1000000000000, "freeBytes": 400000000000, "worldBytes": 2500000000 },
+  "network": {
+    "packetsIn": 4200,
+    "packetsOut": 8800,
+    "bytesIn": 900000,
+    "bytesOut": 2400000,
+    "connections": 1,
+    "series": [{ "t": 0, "in": 40, "out": 80, "bytesIn": 8000, "bytesOut": 20000 }, { "t": 1000, "in": 90, "out": 140, "bytesIn": 18000, "bytesOut": 40000 }]
+  },
+  "heapHistogram": [{ "className": "net.minecraft.world.level.block.state.BlockState", "instances": 120000, "bytes": 14000000 }],
+  "errors": [{ "at": 1756915210000, "level": "ERROR", "logger": "Minecraft", "thread": "Server thread", "message": "Ticking entity", "stack": "java.lang.RuntimeException: demo\n\tat net.minecraft.world.entity.Entity.tick(Entity.java:1)", "count": 3, "fingerprint": "deadbeefcafebabe" }],
+  "sampler": {
+    "intervalMs": 10,
+    "threadDumps": 3000,
+    "groups": {
+      "Server": {
+        "samples": 2800,
+        "root": {
+          "name": "root",
+          "samples": 2800,
+          "self": 0,
+          "children": [
+            {
+              "name": "net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:900)",
+              "samples": 2400,
+              "self": 40,
+              "children": [
+                {
+                  "name": "net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:400)",
+                  "samples": 1800,
+                  "self": 200,
+                  "mod": "minecraft",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

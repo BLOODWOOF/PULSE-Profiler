@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "com.bloodwolf.pulse.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"ConnectionMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

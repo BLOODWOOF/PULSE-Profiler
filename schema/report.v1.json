@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pulse.local/schema/report.v1.json",
+  "title": "Pulse report v1",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "createdAt"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "enum": ["profiler", "health", "heap", "errors"] },
+    "createdAt": { "type": "integer" },
+    "durationMs": { "type": "integer" },
+    "platform": { "type": "object" },
+    "cpu": { "type": "object" },
+    "ticks": { "type": "object" },
+    "worlds": { "type": "array" },
+    "players": { "type": "array" },
+    "viewDistance": { "type": "integer" },
+    "simulationDistance": { "type": "integer" },
+    "memory": { "type": "object" },
+    "gc": { "type": "object" },
+    "disk": { "type": "object" },
+    "network": { "type": "object" },
+    "heapHistogram": { "type": "array" },
+    "errors": { "type": "array" },
+    "sampler": { "type": "object" }
+  }
+}
