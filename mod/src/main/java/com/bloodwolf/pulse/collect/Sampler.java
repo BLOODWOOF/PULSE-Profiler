@@ -35,6 +35,7 @@ public final class Sampler {
 	private static volatile int dumps;
 	private static volatile long overheadNs;
 	private static final Map<String, int[]> states = new ConcurrentHashMap<>();
+	private static final Map<String, Integer> lockWait = new ConcurrentHashMap<>();
 	private static final Map<String, Group> groups = new ConcurrentHashMap<>();
 	private static final List<CpuPoint> cpu = new ArrayList<>();
 	private static final List<MemPoint> memory = new ArrayList<>();
@@ -79,6 +80,7 @@ public final class Sampler {
 		overheadNs = 0;
 		groups.clear();
 		states.clear();
+		lockWait.clear();
 		FRAME_CACHE.clear();
 		cpu.clear();
 		memory.clear();
@@ -163,23 +165,24 @@ public final class Sampler {
 		return states;
 	}
 
+	public static Map<String, Integer> lockWait() {
+		return lockWait;
+	}
+
 	public static List<ThreadSnap> snapshotNow() {
 		List<ThreadSnap> out = new ArrayList<>();
-		for (ThreadInfo info : THREADS.dumpAllThreads(false, false)) {
-			if (info == null || info.getStackTrace() == null) {
-				continue;
-			}
-			if (isSampler(info)) {
+		for (ThreadInfo info : THREADS.dumpAllThreads(true, false)) {
+			if (info == null || info.getStackTrace() == null || isPulseThread(info)) {
 				continue;
 			}
 			List<String> frames = new ArrayList<>();
 			StackTraceElement[] st = info.getStackTrace();
-			int n = Math.min(st.length, 24);
+			int n = Math.min(st.length, 32);
 			for (int i = 0; i < n; i++) {
 				frames.add(frameName(st[i]));
 			}
-			out.add(new ThreadSnap(info.getThreadName() + " " + info.getThreadState(), frames));
-			if (out.size() >= 8) {
+			out.add(new ThreadSnap(threadLabel(info), frames));
+			if (out.size() >= 12) {
 				break;
 			}
 		}
@@ -214,16 +217,21 @@ public final class Sampler {
 	private static void sampleThreads() {
 		dumps++;
 		var cfg = Pulse.config();
-		ThreadInfo[] infos;
+		ThreadInfo[] infos = THREADS.dumpAllThreads(true, false);
 		if (cfg.sampleOnlyServerThread && TickClock.serverThreadId() > 0) {
-			ThreadInfo one = THREADS.getThreadInfo(TickClock.serverThreadId(), cfg.maxStackDepth);
-			infos = one == null ? new ThreadInfo[0] : new ThreadInfo[] { one };
-		} else {
-			infos = THREADS.dumpAllThreads(false, false);
+			long id = TickClock.serverThreadId();
+			ThreadInfo match = null;
+			for (ThreadInfo info : infos) {
+				if (info != null && info.getThreadId() == id) {
+					match = info;
+					break;
+				}
+			}
+			infos = match == null ? new ThreadInfo[0] : new ThreadInfo[] { match };
 		}
 		int depth = Math.max(8, cfg.maxStackDepth);
 		for (ThreadInfo info : infos) {
-			if (info == null || isSampler(info)) {
+			if (info == null || isPulseThread(info)) {
 				continue;
 			}
 			Thread.State state = info.getThreadState();
@@ -243,6 +251,10 @@ public final class Sampler {
 				bucket[0]++;
 			} else if (state == Thread.State.BLOCKED) {
 				bucket[1]++;
+				String lock = info.getLockName();
+				if (lock != null) {
+					lockWait.merge(lock, 1, Integer::sum);
+				}
 			} else if (state == Thread.State.WAITING || state == Thread.State.TIMED_WAITING) {
 				bucket[2]++;
 			} else {
@@ -364,8 +376,19 @@ public final class Sampler {
 		}
 	}
 
-	private static boolean isSampler(ThreadInfo info) {
-		return "pulse-sampler".equals(info.getThreadName());
+	private static boolean isPulseThread(ThreadInfo info) {
+		String name = info.getThreadName();
+		return name != null && name.startsWith("pulse-");
+	}
+
+	private static String threadLabel(ThreadInfo info) {
+		String label = info.getThreadName() + " " + info.getThreadState();
+		if (info.getLockOwnerName() != null) {
+			label += " lock=" + info.getLockOwnerName();
+		} else if (info.getLockName() != null) {
+			label += " " + info.getLockName();
+		}
+		return label;
 	}
 
 	private static String groupName(String thread) {

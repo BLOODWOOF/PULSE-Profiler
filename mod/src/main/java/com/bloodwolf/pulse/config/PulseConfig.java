@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class PulseConfig {
-	public String uploadUrl = "http://127.0.0.1:8787/reports";
+	public String uploadUrl = "";
 	public String viewerBaseUrl = "https://bloodwoof.github.io/PULSE-Profiler";
 	public String serverName = "";
 	public int spikeMs = 50;
@@ -55,18 +55,17 @@ public final class PulseConfig {
 	public static PulseConfig load() {
 		Path path = file();
 		try {
-			PulseConfig cfg;
 			if (Files.exists(path)) {
-				cfg = GSON.fromJson(Files.readString(path), PulseConfig.class);
+				PulseConfig cfg = GSON.fromJson(Files.readString(path), PulseConfig.class);
 				if (cfg == null) {
-					cfg = new PulseConfig();
+					return new PulseConfig();
 				}
-			} else {
-				cfg = new PulseConfig();
+				if (cfg.sampleGroups == null) {
+					cfg.sampleGroups = new ArrayList<>();
+				}
+				return cfg;
 			}
-			if (cfg.sampleGroups == null) {
-				cfg.sampleGroups = new ArrayList<>();
-			}
+			PulseConfig cfg = new PulseConfig();
 			Files.writeString(path, GSON.toJson(cfg));
 			return cfg;
 		} catch (Exception e) {

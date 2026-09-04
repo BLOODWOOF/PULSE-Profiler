@@ -11,7 +11,13 @@ export default function Overview({ report }: { report: PulseReport }) {
   return (
     <div>
       <div className="grid">
-        <Stat label="TPS" value={ticks ? ticks.tps.toFixed(2) : "—"} warn={!!ticks && ticks.tps < 19.5} />
+        {ticks?.windows?.length
+          ? ticks.windows.map((w) => (
+              <Stat key={w.label} label={`TPS ${w.label}`} value={w.tps.toFixed(2)} warn={w.tps < 19.5} />
+            ))
+          : (
+              <Stat label="TPS" value={ticks ? ticks.tps.toFixed(2) : "—"} warn={!!ticks && ticks.tps < 19.5} />
+            )}
         <Stat label="MSPT mean" value={fmtMs(ticks?.msptMean)} warn={!!ticks && ticks.msptMean > 40} />
         <Stat label="MSPT 99%" value={fmtMs(ticks?.msptP99)} />
         <Stat label="MSPT max" value={fmtMs(ticks?.msptMax)} warn={!!ticks && ticks.msptMax > 50} />

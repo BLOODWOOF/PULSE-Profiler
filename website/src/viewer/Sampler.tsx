@@ -95,6 +95,32 @@ export default function Sampler({ report }: { report: PulseReport }) {
         </div>
       ) : null}
 
+      {report.sampler?.lockWait && Object.keys(report.sampler.lockWait).length ? (
+        <div className="card" style={{ marginTop: 12 }}>
+          <h3>Lock waits</h3>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>lock</th>
+                <th>hits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(report.sampler.lockWait)
+                .sort((a, b) => b[1] - a[1])
+                .map(([name, n]) => (
+                  <tr key={name}>
+                    <td>
+                      <code>{name}</code>
+                    </td>
+                    <td>{n}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+
       {spikes.length ? (
         <div className="card" style={{ marginTop: 16 }}>
           <h3>Tick spikes ({spikes.length})</h3>

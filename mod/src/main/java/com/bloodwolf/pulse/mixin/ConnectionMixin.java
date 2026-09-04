@@ -13,18 +13,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ConnectionMixin {
 	@Inject(method = "channelRead0", at = @At("HEAD"))
 	private void pulse$in(ChannelHandlerContext ctx, Packet<?> packet, CallbackInfo ci) {
-		NetworkCounters.packetsIn.incrementAndGet();
-		NetworkCounters.bytesIn.addAndGet(estimate(packet));
+		NetworkCounters.inbound(packetName(packet), estimate(packet));
 	}
 
 	@Inject(method = "send(Lnet/minecraft/network/protocol/Packet;)V", at = @At("HEAD"))
 	private void pulse$out(Packet<?> packet, CallbackInfo ci) {
-		NetworkCounters.packetsOut.incrementAndGet();
-		NetworkCounters.bytesOut.addAndGet(estimate(packet));
+		NetworkCounters.outbound(packetName(packet), estimate(packet));
+	}
+
+	private static String packetName(Packet<?> packet) {
+		String name = packet.getClass().getSimpleName();
+		return name.isEmpty() ? packet.getClass().getName() : name;
 	}
 
 	private static int estimate(Packet<?> packet) {
-		String name = packet.getClass().getSimpleName();
-		return 24 + name.length() * 2;
+		return 24 + packetName(packet).length() * 2;
 	}
 }

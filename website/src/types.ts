@@ -49,6 +49,7 @@ export interface PulseReport {
     msptMax: number;
     series: { t: number; ms: number }[];
     spikes: { t: number; ms: number; stacks: { thread: string; frames: string[] }[] }[];
+    windows?: { label: string; ticks: number; tps: number; mspt: number }[];
   };
   worlds?: {
     id: string;
@@ -92,6 +93,8 @@ export interface PulseReport {
     bytesOut: number;
     connections: number;
     series: { t: number; in: number; out: number; bytesIn: number; bytesOut: number }[];
+    topIn?: { type: string; count: number }[];
+    topOut?: { type: string; count: number }[];
   };
   heapHistogram?: { className: string; instances: number; bytes: number }[];
   errors?: {
@@ -109,6 +112,7 @@ export interface PulseReport {
     threadDumps: number;
     overheadMs?: number;
     threadStates?: Record<string, { runnable: number; blocked: number; waiting: number; other: number }>;
+    lockWait?: Record<string, number>;
     groups: Record<string, { samples: number; root: StackNode }>;
   };
 }
