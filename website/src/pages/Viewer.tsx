@@ -28,7 +28,12 @@ export default function Viewer() {
       return;
     }
     if (!id) return;
-    fetch(`${apiBase()}/reports/${id}`)
+    const api = apiBase();
+    if (!api) {
+      setError("Drop a .pulse.json.gz file on the home page to open a report.");
+      return;
+    }
+    fetch(`${api}/reports/${id}`)
       .then(async (res) => {
         if (!res.ok) throw new Error(`Report ${id} was not found`);
         return (await res.json()) as PulseReport;

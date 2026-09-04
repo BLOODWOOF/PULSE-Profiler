@@ -33,8 +33,8 @@ export default function Download() {
         </li>
         <li>Restart the server.</li>
         <li>
-          Optional: set <code>viewerBaseUrl</code> in <code>config/pulse.json</code> if chat links
-          should open a different site than the default.
+          Profile with <code>/pulse profiler start</code>, then drop the saved report from{" "}
+          <code>config/pulse/reports/</code> on the home page.
         </li>
       </ol>
     </div>

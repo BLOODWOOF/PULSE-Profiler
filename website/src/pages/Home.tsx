@@ -99,7 +99,7 @@ export default function Home() {
           </li>
           <li>
             <strong>Open</strong>
-            Click the chat link, or drop the saved <code>.pulse.json.gz</code> below.
+            Drop the saved <code>.pulse.json.gz</code> from <code>config/pulse/reports/</code> below.
           </li>
         </ol>
       </section>
@@ -108,8 +108,8 @@ export default function Home() {
         <div className="viewer-copy">
           <h2>Viewer</h2>
           <p>
-            This site opens Pulse reports. After a profile finishes, the mod prints a link.
-            A saved <code>.pulse.json.gz</code> file can also be dropped in below.
+            This site opens Pulse reports. After a profile finishes, the file is under{" "}
+            <code>config/pulse/reports/</code>. Drop it below.
           </p>
         </div>
         <div

@@ -31,7 +31,7 @@ Operators only.
 | `/pulse reload` | Reload `config/pulse.json` |
 | `/pulse help` | Command list |
 
-Reports are written to `config/pulse/reports/` when local save is enabled. Those files can be dropped onto the viewer.
+Reports are written to `config/pulse/reports/`. Drop those files on the viewer.
 
 ## Config
 
@@ -39,10 +39,7 @@ Reports are written to `config/pulse/reports/` when local save is enabled. Those
 
 | Key | Meaning |
 | --- | --- |
-| `viewerBaseUrl` | Website used in chat links |
-| `uploadUrl` | Where reports are posted, if uploading is enabled |
 | `sampleOnlyServerThread` | Only sample the server thread |
 | `includeWaitingThreads` | Include idle/waiting stacks |
 | `actionBarHud` | Show TPS / MSPT on the action bar |
 | `saveLocal` | Keep a copy under `config/pulse/reports/` |
-| `autoUpload` | Post the report after a profile finishes (needs `uploadUrl`) |
