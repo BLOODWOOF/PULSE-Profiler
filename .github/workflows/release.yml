@@ -19,7 +19,9 @@ jobs:
           java-version: "25"
       - name: Build
         working-directory: mod
-        run: ./gradlew build --no-daemon
+        run: |
+          chmod +x gradlew
+          ./gradlew build --no-daemon
       - name: Publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,4 +40,8 @@ jobs:
             ls -la mod/build/libs || true
             exit 1
           fi
-          gh release create "${GITHUB_REF_NAME}" "${keep[@]}" --title "${GITHUB_REF_NAME}" --generate-notes --repo "${GITHUB_REPOSITORY}"
+          if gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "${keep[@]}" --clobber --repo "${GITHUB_REPOSITORY}"
+          else
+            gh release create "${GITHUB_REF_NAME}" "${keep[@]}" --title "${GITHUB_REF_NAME}" --generate-notes --repo "${GITHUB_REPOSITORY}"
+          fi
