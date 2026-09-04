@@ -49,7 +49,7 @@ export default function Docs() {
             <td>
               <code>/pulse tps</code>
             </td>
-            <td>Live TPS / MSPT in chat.</td>
+            <td>Live TPS / MSPT over 5s, 10s, 1m, 5m, 15m, plus per-world lines and heap.</td>
           </tr>
           <tr>
             <td>

@@ -27,7 +27,7 @@ Operators only.
 | `/pulse health` | Snapshot of TPS, memory, worlds, and similar |
 | `/pulse heap` | Class histogram |
 | `/pulse errors` | Recent errors |
-| `/pulse tps` | Live TPS / MSPT |
+| `/pulse tps` | Live TPS / MSPT over 5s–15m, worlds, and heap |
 | `/pulse reload` | Reload `config/pulse.json` |
 | `/pulse help` | Command list |
 

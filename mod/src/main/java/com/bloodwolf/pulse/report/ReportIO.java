@@ -23,15 +23,18 @@ public final class ReportIO {
 	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(8)).build();
 	private static final DateTimeFormatter FILE_TIME = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss").withZone(ZoneOffset.UTC);
 
-	public record Result(Path file, String viewerUrl, String error) {}
+	public record Result(Path file, String shareUrl, String error) {}
 
 	private ReportIO() {}
 
-	public static Result saveAndUpload(JsonObject report) {
+	public static Result save(JsonObject report) {
 		String json = ReportBuilder.toJson(report);
 		Path file = Pulse.config().saveLocal ? writeLocal(json, report.get("kind").getAsString()) : null;
-		if (!Pulse.config().autoUpload) {
-			return new Result(file, null, file == null ? "saving and upload are both disabled" : null);
+		if (file == null && Pulse.config().saveLocal) {
+			return new Result(null, null, "could not write report");
+		}
+		if (!Pulse.config().autoUpload || Pulse.config().uploadUrl == null || Pulse.config().uploadUrl.isBlank()) {
+			return new Result(file, null, file == null ? "saving is disabled" : null);
 		}
 		try {
 			return new Result(file, upload(json), null);
@@ -46,10 +49,11 @@ public final class ReportIO {
 		Path path = PulseConfig.reportsDir().resolve(name);
 		try {
 			Files.write(path, gzip(json));
+			return path;
 		} catch (Exception e) {
 			Pulse.LOG.warn("Could not write local report", e);
+			return null;
 		}
-		return path;
 	}
 
 	private static String upload(String json) throws Exception {

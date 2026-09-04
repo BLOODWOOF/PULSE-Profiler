@@ -55,6 +55,9 @@ public final class ReportBuilder {
 
 		if (server != null) {
 			var worldMs = TickClock.worldSamples();
+			if (worldMs.isEmpty()) {
+				worldMs = TickClock.worldLiveSamples();
+			}
 			root.add("worlds", worldsJson(WorldProbe.worlds(server, worldMs)));
 			root.add("players", playersJson(server));
 			root.addProperty("viewDistance", server.getPlayerList().getViewDistance());
@@ -131,6 +134,19 @@ public final class ReportBuilder {
 		o.addProperty("msptP95", WorldProbe.percentile(ticks, 0.95));
 		o.addProperty("msptP99", WorldProbe.percentile(ticks, 0.99));
 		o.addProperty("msptMax", WorldProbe.max(ticks));
+		JsonArray windows = new JsonArray();
+		for (TickClock.Window w : TickClock.windows()) {
+			if (w.ticks() == 0) {
+				continue;
+			}
+			JsonObject win = new JsonObject();
+			win.addProperty("label", w.label());
+			win.addProperty("ticks", w.ticks());
+			win.addProperty("tps", w.tps());
+			win.addProperty("mspt", w.mspt());
+			windows.add(win);
+		}
+		o.add("windows", windows);
 		JsonArray series = new JsonArray();
 		int step = Math.max(1, ticks.size() / 400);
 		for (int i = 0; i < ticks.size(); i += step) {
@@ -228,6 +244,8 @@ public final class ReportBuilder {
 		o.addProperty("bytesOut", NetworkCounters.windowBytesOut());
 		int connections = server == null ? 0 : server.getPlayerList().getPlayerCount();
 		o.addProperty("connections", Math.max(connections, NetworkCounters.connections.get()));
+		o.add("topIn", packetTop(NetworkCounters.topIn(16)));
+		o.add("topOut", packetTop(NetworkCounters.topOut(16)));
 		JsonArray series = new JsonArray();
 		for (Sampler.NetPoint p : Sampler.network()) {
 			JsonObject n = new JsonObject();
@@ -240,6 +258,17 @@ public final class ReportBuilder {
 		}
 		o.add("series", series);
 		return o;
+	}
+
+	private static JsonArray packetTop(List<java.util.Map.Entry<String, Long>> rows) {
+		JsonArray arr = new JsonArray();
+		for (var e : rows) {
+			JsonObject o = new JsonObject();
+			o.addProperty("type", e.getKey());
+			o.addProperty("count", e.getValue());
+			arr.add(o);
+		}
+		return arr;
 	}
 
 	private static JsonArray worldsJson(List<WorldProbe.WorldRow> worlds) {
@@ -330,6 +359,12 @@ public final class ReportBuilder {
 			states.add(name, s);
 		});
 		o.add("threadStates", states);
+		JsonObject locks = new JsonObject();
+		Sampler.lockWait().entrySet().stream()
+			.sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+			.limit(16)
+			.forEach(e -> locks.addProperty(e.getKey(), e.getValue()));
+		o.add("lockWait", locks);
 		JsonObject groups = new JsonObject();
 		Sampler.groups().forEach((name, group) -> {
 			JsonObject g = new JsonObject();

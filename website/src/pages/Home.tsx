@@ -95,7 +95,7 @@ export default function Home() {
           </li>
           <li>
             <strong>Sample</strong>
-            Run <code>/pulse profiler start 30</code> as an operator.
+            Run <code>/pulse profiler start 30</code> as an operator. <code>/pulse tps</code> shows live windows anytime.
           </li>
           <li>
             <strong>Open</strong>

@@ -32,6 +32,44 @@ export default function Network({ report }: { report: PulseReport }) {
         <h3>Packets in</h3>
         <LineChart points={n.series || []} yKey="in" kind="netIn" />
       </div>
+      {(n.topIn?.length || n.topOut?.length) ? (
+        <div className="grid" style={{ marginTop: 12 }}>
+          {n.topOut?.length ? (
+            <div className="card">
+              <h3>Top packets out</h3>
+              <table className="table">
+                <tbody>
+                  {n.topOut.map((row) => (
+                    <tr key={row.type}>
+                      <td>
+                        <code>{row.type}</code>
+                      </td>
+                      <td>{row.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+          {n.topIn?.length ? (
+            <div className="card">
+              <h3>Top packets in</h3>
+              <table className="table">
+                <tbody>
+                  {n.topIn.map((row) => (
+                    <tr key={row.type}>
+                      <td>
+                        <code>{row.type}</code>
+                      </td>
+                      <td>{row.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
       {report.disk ? (
         <div className="card" style={{ marginTop: 12 }}>
           <h3>Disk</h3>

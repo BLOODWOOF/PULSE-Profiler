@@ -25,12 +25,15 @@ public final class PulseHud {
 		if (tick % 20 != 0) {
 			return;
 		}
-		List<Double> samples = TickClock.liveSamples();
+		List<Double> samples = TickClock.lastTicks(100);
 		double mean = WorldProbe.mean(samples);
-		double tps = mean <= 0 ? 20 : Math.min(20.0, 1000.0 / mean);
+		double tps = TickClock.tps(samples);
+		double tps1m = TickClock.tps(TickClock.lastTicks(1200));
 		MutableComponent bar = Component.literal("PULSE ").withStyle(PulseStyle.color(PulseStyle.CYAN).withBold(true))
-			.append(Component.literal("TPS ").withStyle(PulseStyle.color(PulseStyle.MUTED)))
+			.append(Component.literal("5s ").withStyle(PulseStyle.color(PulseStyle.MUTED)))
 			.append(PulseStyle.value(String.format("%.1f", tps), PulseStyle.tpsColor(tps)))
+			.append(Component.literal("  1m ").withStyle(PulseStyle.color(PulseStyle.MUTED)))
+			.append(PulseStyle.value(String.format("%.1f", tps1m), PulseStyle.tpsColor(tps1m)))
 			.append(Component.literal("  MSPT ").withStyle(PulseStyle.color(PulseStyle.MUTED)))
 			.append(PulseStyle.value(String.format("%.1f", mean), PulseStyle.msptColor(mean)));
 		var allow = Commands.hasPermission(Commands.LEVEL_GAMEMASTERS);
