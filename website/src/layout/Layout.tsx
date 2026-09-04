@@ -7,6 +7,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="page">
       <header className="nav">
         <Link className="brand" to="/">
+          <img className="brand-icon" src={`${import.meta.env.BASE_URL}icon.png`} width={28} height={28} alt="" />
           <span className="pulse">PULSE</span>
           <span className="mark">profiler</span>
         </Link>
