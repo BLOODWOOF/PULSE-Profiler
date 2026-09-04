@@ -27,13 +27,11 @@ export default function Home() {
       <section className="hero">
         <p className="kicker">Fabric 26.2 · dedicated servers</p>
         <h1>
-          Diagnose lag, memory, and crashes
-          <br />
-          without guessing.
+          Diagnose lag, memory, and crashes.
         </h1>
         <p className="lede">
           Pulse samples CPU stacks, tick spikes, heap, GC, worlds, packets, and errors, then
-          opens a shareable report. Built for operators who want more than a flame graph.
+          opens the result in this viewer.
         </p>
         <div className="hero-actions">
           <Link className="btn primary" to="/download">
@@ -64,7 +62,7 @@ export default function Home() {
       <section className="features">
         <article>
           <h3>Sampler</h3>
-          <p>Call trees, flame graphs, tick-spike stacks, and optional server-thread-only mode when you need it cheap.</p>
+          <p>Call trees, flame graphs, tick-spike stacks, and a server-thread-only mode for lighter sampling.</p>
         </article>
         <article>
           <h3>Health</h3>
@@ -72,7 +70,7 @@ export default function Home() {
         </article>
         <article>
           <h3>Memory</h3>
-          <p>Heap over time, collector pauses, and a class histogram so leaks are not a guessing game.</p>
+          <p>Heap over time, collector pauses, and a class histogram.</p>
         </article>
         <article>
           <h3>Worlds</h3>
@@ -93,7 +91,7 @@ export default function Home() {
         <ol>
           <li>
             <strong>Install</strong>
-            Drop the jar into your Fabric 26.2 <code>mods</code> folder.
+            Drop the jar into the Fabric 26.2 <code>mods</code> folder.
           </li>
           <li>
             <strong>Sample</strong>
@@ -110,8 +108,8 @@ export default function Home() {
         <div className="viewer-copy">
           <h2>Viewer</h2>
           <p>
-            This site is the report viewer. After a profile uploads, the mod prints a URL. You can
-            also open a file you already have.
+            This site opens Pulse reports. After a profile finishes, the mod prints a link.
+            A saved <code>.pulse.json.gz</code> file can also be dropped in below.
           </p>
         </div>
         <div
@@ -146,8 +144,8 @@ export default function Home() {
       </section>
 
       <p className="quiet">
-        Need a jar? Head to <Link to="/download">downloads</Link> or the{" "}
-        <a href={RELEASES}>GitHub releases</a> page.
+        Need the mod? See <Link to="/download">download</Link> or{" "}
+        <a href={RELEASES}>GitHub releases</a>.
       </p>
     </div>
   );

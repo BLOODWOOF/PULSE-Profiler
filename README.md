@@ -1,52 +1,48 @@
 # Pulse
 
-A detailed Fabric server profiler with a web viewer.
+A Fabric profiler for Minecraft dedicated servers.
 
-Pulse samples CPU stacks, tick times, memory, GC, worlds, network, disk, and errors, then uploads a gzip JSON report. The viewer is a static site meant for GitHub Pages. Shareable links need a small upload API you host yourself.
+It records CPU stacks, tick times, memory, GC, worlds, network, and errors, then opens the result in a web viewer.
 
-Author: BLOODWOLF  
-License: MIT  
-Minecraft: 26.2 (Fabric)
+- **Minecraft:** 26.2 (Fabric)
+- **Author:** BLOODWOLF
+- **License:** MIT
+- **Viewer:** https://bloodwoof.github.io/PULSE-Profiler/
+- **Downloads:** https://github.com/BLOODWOOF/PULSE-Profiler/releases
 
-## Layout
+## Install
 
-- `mod/` — Fabric server mod
-- `website/` — Vite + React viewer (GitHub Pages)
-- `api/` — report upload/storage server
-- `schema/report.v1.json` — report contract
+1. Install Fabric Loader and Fabric API on the server.
+2. Put `pulse-*.jar` in the server `mods` folder.
+3. Restart the server.
 
-## Mod commands
+## Commands
 
-All require operator permission (level 4).
+Operators only.
 
 | Command | What it does |
 | --- | --- |
-| `/pulse profiler start [seconds] [intervalMs]` | Start CPU sampling (default 30s, 10ms) |
-| `/pulse profiler stop` | Stop, save, upload, print a viewer link |
-| `/pulse health` | Metrics snapshot without a long sampler run |
-| `/pulse heap` | Class histogram plus memory snapshot |
-| `/pulse errors` | Recent ERROR/FATAL and uncaught exceptions |
-| `/pulse tps` / `/pulse status` | Live colored TPS / MSPT line |
+| `/pulse profiler start [seconds] [intervalMs]` | Start CPU sampling |
+| `/pulse profiler stop` | Stop and save a report |
+| `/pulse health` | Snapshot of TPS, memory, worlds, and similar |
+| `/pulse heap` | Class histogram |
+| `/pulse errors` | Recent errors |
+| `/pulse tps` | Live TPS / MSPT |
 | `/pulse reload` | Reload `config/pulse.json` |
 | `/pulse help` | Command list |
 
-Reports are written to `config/pulse/reports/` when `saveLocal` is true.
+Reports are written to `config/pulse/reports/` when local save is enabled. Those files can be dropped onto the viewer.
 
-After first launch, `config/pulse.json` includes sampler, HUD, and upload options. Useful knobs:
+## Config
 
-```json
-{
-  "uploadUrl": "http://127.0.0.1:8787/reports",
-  "viewerBaseUrl": "http://127.0.0.1:5173",
-  "defaultDurationSeconds": 30,
-  "defaultIntervalMs": 10,
-  "sampleOnlyServerThread": false,
-  "includeWaitingThreads": true,
-  "sampleGroups": [],
-  "actionBarHud": false,
-  "includeHeapOnProfilerStop": true,
-  "scanWorldSize": false,
-  "anonymizePlayers": false,
-  "pruneBelowPercent": 0.25
-}
-```
+`config/pulse.json` is created on first launch. Common options:
+
+| Key | Meaning |
+| --- | --- |
+| `viewerBaseUrl` | Website used in chat links |
+| `uploadUrl` | Where reports are posted, if uploading is enabled |
+| `sampleOnlyServerThread` | Only sample the server thread |
+| `includeWaitingThreads` | Include idle/waiting stacks |
+| `actionBarHud` | Show TPS / MSPT on the action bar |
+| `saveLocal` | Keep a copy under `config/pulse/reports/` |
+| `autoUpload` | Post the report after a profile finishes (needs `uploadUrl`) |

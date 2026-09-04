@@ -13,7 +13,7 @@ import java.util.List;
 
 public final class PulseConfig {
 	public String uploadUrl = "http://127.0.0.1:8787/reports";
-	public String viewerBaseUrl = "http://127.0.0.1:5173";
+	public String viewerBaseUrl = "https://bloodwoof.github.io/PULSE-Profiler";
 	public String serverName = "";
 	public int spikeMs = 50;
 	public int errorCap = 200;
@@ -26,7 +26,7 @@ public final class PulseConfig {
 	public double pruneBelowPercent = 0.25;
 	public boolean sampleOnlyServerThread = false;
 	public boolean includeWaitingThreads = true;
-	public boolean autoUpload = true;
+	public boolean autoUpload = false;
 	public boolean saveLocal = true;
 	public boolean includeHeapOnProfilerStop = true;
 	public boolean scanWorldSize = false;

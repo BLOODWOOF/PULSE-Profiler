@@ -1,4 +1,4 @@
-import { RELEASES, REPO } from "../links";
+import { RELEASES } from "../links";
 
 export default function Download() {
   return (
@@ -6,8 +6,8 @@ export default function Download() {
       <p className="kicker">Install</p>
       <h1>Download</h1>
       <p className="lede">
-        Pulse is a Fabric server mod for Minecraft 26.2. Grab the latest jar from GitHub Releases
-        and drop it in <code>mods</code> next to Fabric API.
+        Pulse is a Fabric server mod for Minecraft 26.2. Put the jar in the server{" "}
+        <code>mods</code> folder next to Fabric API.
       </p>
 
       <a className="btn primary" href={RELEASES} target="_blank" rel="noreferrer">
@@ -29,21 +29,14 @@ export default function Download() {
           <a href={RELEASES}>releases</a>.
         </li>
         <li>
-          Place it in the server <code>mods</code> folder. Client install is not required.
+          Place it in the server <code>mods</code> folder. It does not need to be on the client.
         </li>
+        <li>Restart the server.</li>
         <li>
-          Start the server once so it writes <code>config/pulse.json</code>.
-        </li>
-        <li>
-          Point <code>uploadUrl</code> and <code>viewerBaseUrl</code> at your API and this site.
+          Optional: set <code>viewerBaseUrl</code> in <code>config/pulse.json</code> if chat links
+          should open a different site than the default.
         </li>
       </ol>
-
-      <h2>Build from source</h2>
-      <p>
-        Clone <a href={REPO}>{REPO}</a>, then in <code>mod/</code> run{" "}
-        <code>gradlew build</code>. The remapped jar lands in <code>mod/build/libs</code>.
-      </p>
     </div>
   );
 }

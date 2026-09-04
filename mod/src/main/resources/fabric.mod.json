@@ -3,12 +3,12 @@
 	"id": "pulse",
 	"version": "${version}",
 	"name": "Pulse",
-	"description": "In-depth Fabric server profiler for CPU, ticks, memory, worlds, network, and errors",
+	"description": "Fabric server profiler for CPU, ticks, memory, worlds, network, and errors",
 	"authors": [
 		"BLOODWOLF"
 	],
 	"contact": {
-		"sources": "https://github.com/BLOODWOLF/pulse"
+		"sources": "https://github.com/BLOODWOOF/PULSE-Profiler"
 	},
 	"license": "MIT",
 	"environment": "*",

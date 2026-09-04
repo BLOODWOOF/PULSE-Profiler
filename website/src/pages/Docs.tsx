@@ -3,12 +3,10 @@ export default function Docs() {
     <div className="prose">
       <p className="kicker">Reference</p>
       <h1>Docs</h1>
-      <p className="lede">
-        Operator commands, config, and how reports get from the server to this viewer.
-      </p>
+      <p className="lede">Commands and config for running Pulse on a Fabric server.</p>
 
       <h2>Commands</h2>
-      <p>All of these need operator permission (game masters).</p>
+      <p>These require operator permission.</p>
       <table className="table">
         <thead>
           <tr>
@@ -21,51 +19,52 @@ export default function Docs() {
             <td>
               <code>/pulse profiler start [seconds] [intervalMs]</code>
             </td>
-            <td>Start sampling. Defaults come from config (30s / 10ms).</td>
+            <td>Start sampling. Defaults are 30 seconds at 10ms unless changed in config.</td>
           </tr>
           <tr>
             <td>
               <code>/pulse profiler stop</code>
             </td>
-            <td>Stop, save, upload, print a viewer link.</td>
+            <td>Stop and save a report.</td>
           </tr>
           <tr>
             <td>
               <code>/pulse health</code>
             </td>
-            <td>Metrics snapshot without a long sampler run.</td>
+            <td>Snapshot of TPS, memory, worlds, and similar.</td>
           </tr>
           <tr>
             <td>
               <code>/pulse heap</code>
             </td>
-            <td>Class histogram plus memory snapshot.</td>
+            <td>Class histogram plus a memory snapshot.</td>
           </tr>
           <tr>
             <td>
               <code>/pulse errors</code>
             </td>
-            <td>Recent ERROR/FATAL and uncaught exceptions.</td>
+            <td>Recent errors and uncaught exceptions.</td>
           </tr>
           <tr>
             <td>
               <code>/pulse tps</code>
             </td>
-            <td>Live TPS / MSPT line in chat.</td>
+            <td>Live TPS / MSPT in chat.</td>
           </tr>
           <tr>
             <td>
               <code>/pulse reload</code>
             </td>
-            <td>Reload <code>config/pulse.json</code>.</td>
+            <td>
+              Reload <code>config/pulse.json</code>.
+            </td>
           </tr>
         </tbody>
       </table>
 
       <h2>Config</h2>
       <p>
-        After first launch, edit <code>config/pulse.json</code>. Defaults are written back on load
-        so new knobs show up when you update the mod.
+        <code>config/pulse.json</code> is created the first time the server starts with Pulse installed.
       </p>
       <table className="table">
         <thead>
@@ -79,25 +78,25 @@ export default function Docs() {
             <td>
               <code>uploadUrl</code>
             </td>
-            <td>POST endpoint for gzip JSON reports.</td>
+            <td>Address reports are posted to when upload is enabled.</td>
           </tr>
           <tr>
             <td>
               <code>viewerBaseUrl</code>
             </td>
-            <td>This website origin, used to build chat links.</td>
+            <td>This website, used to build the link printed in chat.</td>
           </tr>
           <tr>
             <td>
               <code>sampleOnlyServerThread</code>
             </td>
-            <td>Cheaper sampler: only dump the server thread.</td>
+            <td>Only sample the server thread.</td>
           </tr>
           <tr>
             <td>
               <code>includeWaitingThreads</code>
             </td>
-            <td>Include WAITING / TIMED_WAITING stacks.</td>
+            <td>Include waiting threads in the sample.</td>
           </tr>
           <tr>
             <td>
@@ -109,32 +108,18 @@ export default function Docs() {
             <td>
               <code>scanWorldSize</code>
             </td>
-            <td>Walk the world folder to estimate disk use (slow).</td>
+            <td>Estimate world folder size. This can hitch the save.</td>
+          </tr>
+          <tr>
+            <td>
+              <code>saveLocal</code>
+            </td>
+            <td>
+              Keep a copy under <code>config/pulse/reports/</code>. Those files can be dropped on the home page.
+            </td>
           </tr>
         </tbody>
       </table>
-
-      <h2>Hosting this site</h2>
-      <p>
-        The viewer is a static Vite app. GitHub Pages can host it. Uploads need a small API you
-        run yourself (<code>api/</code> in the repo, default port 8787).
-      </p>
-      <ol>
-        <li>
-          Set the Actions variable <code>VITE_API_BASE</code> to your API origin.
-        </li>
-        <li>
-          Enable GitHub Pages from the Actions workflow.
-        </li>
-        <li>
-          In <code>pulse.json</code>, set <code>viewerBaseUrl</code> to the Pages URL and{" "}
-          <code>uploadUrl</code> to <code>https://your-api/reports</code>.
-        </li>
-      </ol>
-      <p>
-        If the API is down, reports still save under <code>config/pulse/reports/</code> when{" "}
-        <code>saveLocal</code> is true. Drop those files on the home page.
-      </p>
     </div>
   );
 }
