@@ -1,6 +1,6 @@
 # Pulse
 
-A detailed Fabric server profiler with a Spark-style web viewer.
+A detailed Fabric server profiler with a web viewer.
 
 Pulse samples CPU stacks, tick times, memory, GC, worlds, network, disk, and errors, then uploads a gzip JSON report. The viewer is a static site meant for GitHub Pages. Shareable links need a small upload API you host yourself.
 
