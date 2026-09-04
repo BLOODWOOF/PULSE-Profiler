@@ -113,6 +113,8 @@ export interface PulseReport {
   };
 }
 
-export function apiBase(): string {
-  return (import.meta.env.VITE_API_BASE || "http://127.0.0.1:8787").replace(/\/$/, "");
+export function apiBase(): string | null {
+  const raw = import.meta.env.VITE_API_BASE;
+  if (!raw) return null;
+  return raw.replace(/\/$/, "");
 }

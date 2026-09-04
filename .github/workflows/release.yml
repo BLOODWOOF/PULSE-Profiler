@@ -1,0 +1,41 @@
+name: Release mod
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+      - name: Build
+        working-directory: mod
+        run: ./gradlew build --no-daemon
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          shopt -s nullglob
+          jars=(mod/build/libs/pulse-*.jar)
+          keep=()
+          for jar in "${jars[@]}"; do
+            case "$jar" in
+              *-sources.jar|*-dev.jar|*-dev-*.jar) ;;
+              *) keep+=("$jar") ;;
+            esac
+          done
+          if [ ${#keep[@]} -eq 0 ]; then
+            echo "no remap jar found"
+            ls -la mod/build/libs || true
+            exit 1
+          fi
+          gh release create "${GITHUB_REF_NAME}" "${keep[@]}" --title "${GITHUB_REF_NAME}" --generate-notes --repo "${GITHUB_REPOSITORY}"

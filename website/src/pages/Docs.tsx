@@ -76,18 +76,6 @@ export default function Docs() {
         <tbody>
           <tr>
             <td>
-              <code>uploadUrl</code>
-            </td>
-            <td>Address reports are posted to when upload is enabled.</td>
-          </tr>
-          <tr>
-            <td>
-              <code>viewerBaseUrl</code>
-            </td>
-            <td>This website, used to build the link printed in chat.</td>
-          </tr>
-          <tr>
-            <td>
               <code>sampleOnlyServerThread</code>
             </td>
             <td>Only sample the server thread.</td>
