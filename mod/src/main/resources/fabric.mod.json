@@ -11,6 +11,7 @@
 		"sources": "https://github.com/BLOODWOOF/PULSE-Profiler"
 	},
 	"license": "MIT",
+	"icon": "assets/pulse/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
